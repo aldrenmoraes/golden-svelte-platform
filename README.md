@@ -99,7 +99,9 @@ bun run format       # Prettier writes
 bun run verify       # svelte-check + Prettier check + ESLint + bun test + locale parity
 ```
 
-`bun run verify` is the aggregate gate and must report zero errors. CI
+`bun run verify` is the aggregate gate and must report zero errors. It compiles the Paraglide
+messages first, because `src/lib/paraglide/` is a generated artifact that is not committed — a
+fresh clone has no i18n modules until something generates them. CI
 ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the same gate, then `bun run build`,
 then a Docker image build, on every push to `main` and every pull request.
 
@@ -137,6 +139,7 @@ Rules that the review gate enforces:
 | `bun run db:generate`    | Generate a migration from the Drizzle schema         |
 | `bun run db:migrate`     | Apply migrations                                     |
 | `bun run db:studio`      | Drizzle Studio                                       |
+| `bun run i18n:compile`   | Compile Paraglide messages into `src/lib/paraglide`  |
 | `bun run i18n:check`     | Fail if the locale files drift apart                 |
 | `bun run scaffold:plan`  | Dry-run activation                                   |
 | `bun run activate`       | Activate the manifest (alias of `scaffold:activate`) |
