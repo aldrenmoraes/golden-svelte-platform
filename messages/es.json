@@ -1,0 +1,9 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"app_name": "Golden Svelte Platform",
+	"app_loading": "Plataforma lista para activarse.",
+	"theme_toggle_label": "Cambiar tema",
+	"theme_mode_light": "Claro",
+	"theme_mode_dark": "Oscuro",
+	"theme_mode_system": "Sistema"
+}

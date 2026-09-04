@@ -1,0 +1,17 @@
+services:
+  app:
+    restart: unless-stopped
+    ports: []
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.${APP_NAME}.rule=Host(`${PUBLIC_HOST}`)'
+      - 'traefik.http.routers.${APP_NAME}.entrypoints=websecure'
+      - 'traefik.http.routers.${APP_NAME}.tls=true'
+      - 'traefik.http.services.${APP_NAME}.loadbalancer.server.port=3000'
+    networks:
+      - default
+      - edge
+networks:
+  edge:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik}

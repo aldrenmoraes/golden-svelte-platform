@@ -1,0 +1,6 @@
+required:
+  - svelte-docs
+recommended:
+  - bun-docs
+  - postgres-docs
+  - docker-docs

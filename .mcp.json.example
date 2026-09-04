@@ -1,0 +1,6 @@
+{
+	"mcpServers": {
+		"svelte": { "command": "REPLACE_WITH_YOUR_SVELTE_MCP_COMMAND" },
+		"bun": { "command": "REPLACE_WITH_YOUR_BUN_MCP_COMMAND" }
+	}
+}

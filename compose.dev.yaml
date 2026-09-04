@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      target: dependencies
+    command: ['bun', 'run', 'dev', '--', '--host', '0.0.0.0']
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/app
+      - app-node-modules:/app/node_modules
+  db:
+    ports:
+      - '5432:5432'
+  otel-collector:
+    ports:
+      - '4318:4318'
+volumes:
+  app-node-modules:

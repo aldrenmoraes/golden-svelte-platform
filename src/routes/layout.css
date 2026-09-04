@@ -1,0 +1,80 @@
+@import 'tailwindcss';
+
+:root {
+	--surface: oklch(0.98 0.004 250);
+	--surface-raised: oklch(1 0 0);
+	--text: oklch(0.22 0.02 260);
+	--muted: oklch(0.49 0.03 260);
+	--border: oklch(0.88 0.015 250);
+	--accent: oklch(0.56 0.16 235);
+}
+
+:root[data-theme='dark'] {
+	--surface: oklch(0.16 0.015 260);
+	--surface-raised: oklch(0.21 0.02 260);
+	--text: oklch(0.93 0.01 250);
+	--muted: oklch(0.7 0.025 250);
+	--border: oklch(0.32 0.025 260);
+	--accent: oklch(0.75 0.13 230);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root[data-theme='system'] {
+		--surface: oklch(0.16 0.015 260);
+		--surface-raised: oklch(0.21 0.02 260);
+		--text: oklch(0.93 0.01 250);
+		--muted: oklch(0.7 0.025 250);
+		--border: oklch(0.32 0.025 260);
+		--accent: oklch(0.75 0.13 230);
+	}
+}
+
+html,
+body {
+	min-height: 100%;
+	background: var(--surface);
+	color: var(--text);
+}
+body {
+	margin: 0;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.platform-shell {
+	min-height: 100vh;
+}
+.platform-header {
+	align-items: center;
+	border-bottom: 1px solid var(--border);
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 1.5rem;
+}
+.platform-mark {
+	color: inherit;
+	font-weight: 700;
+	text-decoration: none;
+}
+.platform-home {
+	margin: 0 auto;
+	max-width: 56rem;
+	padding: 7rem 1.5rem;
+}
+.platform-home h1 {
+	font-size: clamp(2.5rem, 7vw, 5rem);
+	line-height: 0.95;
+	margin: 0.4rem 0 1rem;
+}
+.eyebrow {
+	color: var(--accent);
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.theme-toggle select {
+	background: var(--surface-raised);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	color: var(--text);
+	padding: 0.45rem 0.65rem;
+}

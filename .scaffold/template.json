@@ -1,0 +1,13 @@
+{
+	"kind": "golden-svelte-platform",
+	"schemaVersion": 1,
+	"platformVersion": "1.0.0",
+	"managedFiles": [
+		"AGENTS.md",
+		"CLAUDE.md",
+		"scripts/",
+		".scaffold/",
+		"compose*.yaml",
+		"Dockerfile"
+	]
+}

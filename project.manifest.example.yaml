@@ -1,0 +1,53 @@
+schemaVersion: 1
+
+project:
+  name: 'golden-svelte-platform'
+  displayName: 'Golden Svelte Platform'
+  description: 'A governed Svelte 5 application platform.'
+
+platform:
+  scaffoldVersion: '1.0.0'
+  profile: 'operations'
+  features:
+    auth: true
+    rbac: true
+    postgres: true
+    telemetry: true
+    docker: true
+    i18n: true
+    themes: true
+    releases: true
+
+domain:
+  boundedContexts:
+    - platform
+  roles:
+    - code: admin
+      description: 'Full platform administration'
+    - code: operator
+      description: 'Operational management'
+    - code: viewer
+      description: 'Read-only access'
+  entities:
+    - user_preference
+
+observability:
+  serviceName: 'golden-svelte-platform'
+  piiFields: ['email', 'phone', 'document']
+
+delivery:
+  dockerComposeProject: 'golden-svelte-platform'
+  publicHost: 'golden-svelte-platform.localhost'
+
+experience:
+  sourceLocale: 'pt-BR'
+  supportedLocales: ['pt-BR', 'en', 'fr', 'es']
+  publicRouteStrategy: 'localized'
+  privateRouteStrategy: 'user-preference'
+  themeDefault: 'system'
+  enabledThemes: ['light', 'dark', 'system']
+
+release:
+  initialVersion: '0.1.0'
+  channel: 'stable'
+  commitConvention: 'conventional'

@@ -1,0 +1,45 @@
+services:
+  app:
+    image: ${APP_IMAGE:-golden-svelte-platform:local}
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      ORIGIN: ${PUBLIC_APP_URL:?PUBLIC_APP_URL is required}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET is required}
+      APP_VERSION: ${APP_VERSION:-0.0.0}
+      OTEL_SERVICE_NAME: ${OTEL_SERVICE_NAME:-golden-svelte-platform}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4318/v1/traces}
+    depends_on:
+      db:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
+  migrate:
+    image: ${APP_IMAGE:-golden-svelte-platform:local}
+    command: ['bun', 'run', 'db:migrate']
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ['ops']
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.139.0
+    command: ['--config=/etc/otelcol-contrib/config.yaml']
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+volumes:
+  postgres-data:
