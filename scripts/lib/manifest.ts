@@ -75,7 +75,19 @@ export const manifestSchema = z
 				publicRouteStrategy: z.literal('localized'),
 				privateRouteStrategy: z.literal('user-preference'),
 				themeDefault: themeSchema,
-				enabledThemes: z.array(themeSchema).min(3).max(3)
+				enabledThemes: z.array(themeSchema).min(3).max(3),
+				// Optional: filled by `bun run bootstrap` when a logo is analysed, and read by
+				// scripts/extract-logo-theme.ts to regenerate src/lib/theme/palette.css.
+				brand: z
+					.object({
+						logo: z.string().trim().min(1).max(240).optional(),
+						seedColor: z
+							.string()
+							.regex(/^#[0-9a-fA-F]{6}$/, 'Use uma cor hexadecimal, por exemplo #2f7fd0.')
+							.optional()
+					})
+					.strict()
+					.optional()
 			})
 			.strict()
 			.superRefine((value, context) => {

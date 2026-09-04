@@ -46,6 +46,11 @@ experience:
   privateRouteStrategy: 'user-preference'
   themeDefault: 'system'
   enabledThemes: ['light', 'dark', 'system']
+  # Optional. `bun run bootstrap` fills these when you point it at a logo; regenerate the
+  # stylesheet with `bun run theme:logo -- --logo <arquivo>`.
+  # brand:
+  #   logo: 'static/logo.svg'
+  #   seedColor: '#2f7fd0'
 
 release:
   initialVersion: '0.1.0'

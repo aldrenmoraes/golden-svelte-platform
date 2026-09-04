@@ -25,8 +25,9 @@ services:
       - .:/app
       - app-node-modules:/app/node_modules
   db:
+    # POSTGRES_PORT (set by `bun run bootstrap`) moves the published port when 5432 is taken.
     ports:
-      - '5432:5432'
+      - '${POSTGRES_PORT:-5432}:5432'
   otel-collector:
     ports:
       - '4318:4318'
