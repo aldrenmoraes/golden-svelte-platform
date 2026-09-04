@@ -9,9 +9,21 @@ services:
       APP_VERSION: ${APP_VERSION:-0.0.0}
       OTEL_SERVICE_NAME: ${OTEL_SERVICE_NAME:-golden-svelte-platform}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4318/v1/traces}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'wget -qO- "http://127.0.0.1:${APP_PORT:-3000}/api/health" >/dev/null || exit 1'
+        ]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
     depends_on:
       db:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
       otel-collector:
         condition: service_started
   migrate:
@@ -19,10 +31,10 @@ services:
     command: ['bun', 'run', 'db:migrate']
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    restart: 'no'
     depends_on:
       db:
         condition: service_healthy
-    profiles: ['ops']
   db:
     image: postgres:17-alpine
     environment:

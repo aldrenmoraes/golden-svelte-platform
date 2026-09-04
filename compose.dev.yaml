@@ -4,8 +4,23 @@ services:
       context: .
       target: dependencies
     command: ['bun', 'run', 'dev', '--', '--host', '0.0.0.0']
+    # The dev server listens on 5173; `${APP_PORT}` in compose.yaml is resolved from the
+    # env file at config time, so the dev healthcheck is overridden here instead.
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- "http://127.0.0.1:5173/api/health" >/dev/null || exit 1']
+      interval: 15s
+      timeout: 5s
+      start_period: 60s
+      retries: 10
     ports:
       - '5173:5173'
+    volumes:
+      - .:/app
+      - app-node-modules:/app/node_modules
+  migrate:
+    build:
+      context: .
+      target: dependencies
     volumes:
       - .:/app
       - app-node-modules:/app/node_modules

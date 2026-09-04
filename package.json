@@ -23,6 +23,7 @@
 		"test": "bun test",
 		"test:watch": "bun test --watch",
 		"i18n:check": "bun run scripts/check-locales.ts",
+		"activate": "bun run scaffold:activate",
 		"scaffold:activate": "bun run scripts/activate.ts -- --manifest project.manifest.yaml",
 		"scaffold:plan": "bun run scripts/activate.ts -- --manifest project.manifest.yaml --dry-run",
 		"scaffold:refresh": "bun run scripts/activate.ts -- --manifest project.manifest.yaml --force",

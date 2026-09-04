@@ -1,13 +1,17 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import { building } from '$app/environment';
+import { building, dev } from '$app/environment';
 import type { Handle } from '@sveltejs/kit';
 import { getTextDirection } from '$lib/paraglide/runtime';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import { auth } from '$lib/server/auth';
 import { logger, withRequestContext } from '$lib/server/observability/logger';
+import { applySecurityHeaders } from '$lib/server/security/headers';
 import { isThemeMode } from '$lib/theme';
 import { themeConfig } from '$lib/theme/config';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
+
+const handleSecurityHeaders: Handle = async ({ event, resolve }) =>
+	applySecurityHeaders(await resolve(event), { dev });
 
 const handleParaglide: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request, locale }) => {
@@ -65,6 +69,7 @@ const handleLogging: Handle = async ({ event, resolve }) => {
 };
 
 export const handle: Handle = sequence(
+	handleSecurityHeaders,
 	handleParaglide,
 	handleTheme,
 	handleBetterAuth,

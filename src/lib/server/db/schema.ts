@@ -7,3 +7,4 @@ export const task = pgTable('task', {
 });
 
 export * from './auth.schema';
+export * from '../modules/sample/schema';

@@ -1,3 +1,4 @@
 [test]
-root = "tests"
+# Both the platform suites in tests/ and the tests co-located with domain modules in src/.
+root = "."
 preload = ["./tests/setup.ts"]
